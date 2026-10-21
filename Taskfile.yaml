@@ -1,0 +1,18 @@
+version: '3'
+
+tasks:
+  default:
+    cmd: task --list
+
+  venv:
+    desc: Create .venv and install locked dependencies
+    cmds:
+      - uv sync --locked
+
+  validate:
+    desc: Validate a skill (task validate -- <path-to-skill>)
+    preconditions:
+      - sh: test -n {{.CLI_ARGS | shellQuote}}
+        msg: 'Usage: task validate -- <path-to-skill>'
+    cmds:
+      - .venv/bin/agentskills validate {{.CLI_ARGS}}
