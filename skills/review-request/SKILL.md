@@ -1,28 +1,42 @@
 ---
 name: review-request
-description: Prepares an evidence-based implementation handoff and orchestrates a dual-agent code review (specification compliance + adversarial critique). Use when asked for a review request, review handoff, handoff for review, or multi-agent code review.
+description: Prepares a concise, evidence-based implementation handoff and orchestrates a dual-agent code review (specification compliance + adversarial critique). Use when asked for a review request, review handoff, handoff for review, or multi-agent code review.
 ---
 
 This skill defines a two-part workflow:
-1. **Review Handoff:** An evidence-based summary of an implemented change, paired with a ready-to-run review prompt for an external or fresh reviewer agent.
+1. **Review Handoff:** A concise, evidence-based summary of an implemented change, paired with a compact prompt for an external or fresh reviewer agent.
 2. **Dual-Agent Review Protocol:** Instructions for an orchestrating reviewer agent to run two independent read-only reviewers (Compliance + Adversarial) and synthesize their findings.
 
-When invoked after implementing a change, output the **Review Handoff** (including the embedded **Reviewer Instructions** block). When invoked to *perform* a review on a handoff or diff, execute the **Dual-Agent Review Protocol** directly.
+When invoked after implementing a change, output the **Review Handoff**. When invoked to *perform* a review on a handoff or diff, execute the **Dual-Agent Review Protocol** directly.
 
 ---
 
 ## Part 1: Review Handoff Structure
 
-Generate a concise, evidence-backed handoff containing these exact sections:
+### Brevity & Deduplication Rules
+- **Link, do not restate:** Cite plan files, specs, ADRs, `AGENTS.md`, and active skills by file path. Do **not** copy-paste architecture rules, naming conventions, or specifications that already exist in referenced files; state inline only requirements that are not recorded on disk.
+- **State each fact once:** Never repeat the same limitation, test caveat, or safety rule across multiple sections.
+- **No prose essays or wrapper scripts:** Use single-sentence bullets and compact tables. Never paste multi-line shell/Python wrapper scripts in the verification section.
 
-1. **Goal & Implementation Summary:** The original user request/problem and a concise summary of what was implemented.
-2. **Context & Reference Links:** Paths or links to the approved implementation plan, architectural docs, ADRs, or skills (e.g., `python-naming`) that govern the change.
-3. **Changed Files & Components:** List of added, modified, and removed files/modules with a 1-line summary of each change.
-4. **Verification Evidence:** Exact test, linter, and type-check commands executed and their observed results. Every completion claim must cite its verification check.
-5. **Resolved Issues During Implementation:** Notable edge cases, failures, or design trade-offs encountered and how they were resolved.
-6. **Unverified Areas:** Anything that could not be tested or verified automatically (e.g., external APIs, missing credentials, production-only migrations) and why.
-7. **Remaining Risks & Next Steps:** Known limitations, operational risks, or recommended follow-up tasks.
-8. **Reviewer Prompt:** Append a copy-pasteable prompt instructing the reviewing agent to execute **Part 2: Dual-Agent Review Protocol** below.
+### Required Sections
+
+1. **Goal & Implementation Summary** *(3–5 bullets max)*: The original objective and a high-level summary of what was implemented.
+2. **Context & Reference Links:** Repository path, base commit / diff scope (`git diff` command), and paths to the approved plan, `AGENTS.md`, and active skills (plus brief bullets *only* for unwritten task-specific constraints).
+3. **Changed Files & Components:** Compact table or bullet list with a 1-line summary per entry and total diff stat. For large changes (>15 files), group by module or layer into at most 10–15 rows.
+4. **Verification Evidence:** Compact list of `command -> 1-line observed result` for tests, linters, and type checks. Every completion claim must map to a check; summarize one-off test commands in one line rather than pasting inline scripts.
+5. **Resolved Issues & Key Decisions** *(max 5 single-sentence bullets)*: Non-obvious edge cases or design trade-offs resolved during implementation.
+6. **Unverified Areas** *(max 5 single-sentence bullets)*: Anything not verified automatically (e.g., production DB engine, live browser, type checker) and why.
+7. **Remaining Risks & Next Steps** *(max 5 single-sentence bullets)*: Operational/migration risks or follow-up tasks (do not repeat Section 6 items).
+8. **Reviewer Prompt:** Append a short copy-pasteable block following this template (keep under 15 lines):
+
+```markdown
+### Reviewer Instructions
+Review the changes in `<repo-path>` (scope: `<diff-command-or-paths>`, base: `<commit>`) against the handoff above and `<paths-to-plan-and-AGENTS.md>`. Do NOT modify files, stage/commit, or touch shared services/databases.
+1. Execute the `review-request` Dual-Agent Review Protocol: run two independent read-only review passes (in parallel via subagents if available, otherwise sequentially):
+   - **Pass 1 (Compliance):** Verify requirement coverage, scope boundaries, correctness/regressions, architecture/naming rules, and whether verification evidence proves each claim. Separate Confirmed Findings from Optional Suggestions.
+   - **Pass 2 (Adversarial):** Assume the code is flawed until proven otherwise. Find up to 5 concrete, `file:line`-backed issues per category (fewer if no real evidence exists; never invent filler): (a) Correctness/edge cases, (b) Over-engineering, (c) Naming/readability, (d) Typical agentic pitfalls (broad `except`, dead helpers/shims, redundant comments, weak typing), (e) Security/reliability.
+2. Verify every reported finding against the actual code, discard false positives and rules that conflict with project conventions, deduplicate, and rank validated findings as `Critical`/`High`, `Medium`, or `Low` with `file:line` evidence and recommended fixes. Wait for developer approval before editing code.
+```
 
 ---
 
