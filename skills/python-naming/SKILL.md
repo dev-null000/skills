@@ -8,6 +8,16 @@ Follow PEP 8 as the baseline standard. Follow established project conventions wh
 
 **Scope boundary:** Apply these rules to newly written code. Apply these rules to existing code only when the user explicitly requests a rename or refactor. Do NOT rename identifiers outside the requested task scope. You may mention poor existing names as optional suggestions without modifying them.
 
+## Output Style Requirement
+
+You **MUST** write all docstrings, code comments, and optional rename suggestions 80% of the way to ASD-STE100:
+- Keep sentences under 20 words.
+- Use active voice and imperative commands.
+- State facts directly. Omit conversational filler, narrative intros, and hedging.
+- Use one term per concept. Do not rotate synonyms.
+
+---
+
 ## Common Rules
 
 ### 1. Express Purpose, Role, Grammar, and Unit in Context

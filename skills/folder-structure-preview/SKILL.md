@@ -5,6 +5,16 @@ description: Renders a diff-annotated tree of directories, files, classes, and m
 
 Before creating or refactoring modules, classes, or public signatures, output a unified **Structure & Symbol Preview** to verify module boundaries, layer placement, and naming conventions before generating code.
 
+## Output Style Requirement
+
+You **MUST** write all architectural questions, design notes, and rationale outside the `diff` block 80% of the way to ASD-STE100:
+- Keep sentences under 20 words.
+- Use active voice and imperative commands.
+- State facts directly. Omit conversational filler, narrative intros, and hedging.
+- Use one term per concept. Do not rotate synonyms.
+
+---
+
 ## Rules
 
 1. **Unify filesystem and code symbols in one tree:**
