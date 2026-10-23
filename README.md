@@ -6,33 +6,34 @@ Opinionated, reusable agent skills designed for portability across **Codex**, **
 
 ### Option 1: Clone & Symlink (Recommended — Easy Updates)
 
-Clone this repository once and symlink the skills into your agent's global (or project-local) skills directory.
+Clone this repository once (or navigate to your existing clone) and symlink the skills into your agent's global (or project-local) skills directory from the repository root:
 
 ```sh
-git clone git@github.com:dev-null000/skills.git ~/skills
+git clone git@github.com:dev-null000/skills.git
+cd skills
 ```
 
 - **Codex** (Global: `~/.codex/skills/` or Project: `.agents/skills/`):
   ```sh
   mkdir -p ~/.codex/skills
-  ln -sfn ~/skills/skills/* ~/.codex/skills/
+  ln -sfn "$PWD/skills"/* ~/.codex/skills/
   ```
 - **Claude Code** (Global: `~/.claude/skills/` or Project: `.claude/skills/`):
   ```sh
   mkdir -p ~/.claude/skills
-  ln -sfn ~/skills/skills/* ~/.claude/skills/
+  ln -sfn "$PWD/skills"/* ~/.claude/skills/
   ```
 - **Antigravity** (Global: `~/.gemini/config/skills/` or Project: `.agents/skills/`):
   ```sh
   mkdir -p ~/.gemini/config/skills
-  ln -sfn ~/skills/skills/* ~/.gemini/config/skills/
+  ln -sfn "$PWD/skills"/* ~/.gemini/config/skills/
   ```
 
 **Updating symlinked skills:**
-Pull the latest changes in your cloned repository (and run the `ln -sfn` command again if new skill directories were added), then start a new agent session:
+Pull the latest changes from the repository root (and re-run the `ln -sfn` command if new skill directories were added), then start a new agent session:
 
 ```sh
-git -C ~/skills pull
+git pull
 ```
 
 ### Option 2: Codex `$skill-installer` (Direct from GitHub)
