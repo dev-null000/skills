@@ -1,52 +1,61 @@
 ---
 name: review-response
-description: Evaluates, triages, and responds to external agentic code review findings using evidence-based senior engineering judgment before implementing fixes. Use when the user provides findings, critique, or reports from an external code review (as a markdown prompt, report, or file path).
+description: Evaluates, triages, and responds to external code review findings using concrete codebase evidence before changing code. Use when given review findings, critique, or reports.
 ---
 
-When presented with findings from an external code review (pasted as markdown or referenced via a file path), execute this protocol to critically evaluate, verify, and triage each finding before modifying code.
+When given findings from an external code review, execute this protocol. Evaluate, verify, and triage each finding before modifying code.
 
-**Bypass rule:** If the user explicitly instructs to fix all review findings unconditionally, bypass this evaluation and proceed directly to implementation. Otherwise, follow the three-step workflow below.
+**Bypass rule:** If the user explicitly commands to fix all findings unconditionally, bypass evaluation and implement fixes directly. Otherwise, follow the three steps below.
+
+## Output Style Requirement
+
+You **MUST** write all triage reports, table entries, technical rebuttals, and remediations 80% of the way to ASD-STE100:
+- Keep sentences under 20 words.
+- Use active voice and imperative commands.
+- State facts directly. Omit conversational filler, polite padding, and hedging.
+- Write dispassionate technical rebuttals backed by code facts. Never write defensive prose.
+- Use one term per concept. Do not rotate synonyms.
 
 ---
 
-## 1. Evidence-Based Critical Evaluation
+## 1. Evidence-Based Verification
 
-Evaluate every finding independently with senior-level engineering rigor. Do not assume the reviewer is correct, and do not defend prior decisions out of bias or ego—let concrete codebase evidence drive every verdict.
+Evaluate each finding independently. Base every decision on verifiable code evidence. Do not assume the reviewer is correct.
 
-### Verification Protocol
+### Verification Steps
 For each reported finding:
-1. **Inspect actual code:** Navigate to the cited `file:line` and trace execution paths, runtime invariants, and call hierarchies.
-2. **Verify against reality:** Check the claim against the repository's type system, runtime constraints, active skills (e.g., naming conventions), architecture boundaries, and test suite.
-3. **Dispassionate evaluation:** If the reviewer demonstrates an actual bug, oversight, or design flaw with valid evidence, accept it immediately without rationalization.
+1. **Inspect code:** Open the cited `file:line`. Trace call hierarchies, data flows, and runtime invariants.
+2. **Verify against reality:** Check the claim against static types, tests, runtime behavior, and active skill rules.
+3. **Accept valid defects:** If code evidence confirms a defect or design flaw, accept the finding immediately.
 
 ### Rejection Criteria (Decline Finding)
-Firmly decline findings that meet any of the following criteria, providing a concrete technical rebuttal backed by code evidence:
-- **Incorrect or mistaken:** Reviewer misread the code, hallucinated nonexistent APIs or behaviors, or misdiagnosed execution flow.
-- **Imaginary or speculative problems:** Theoretical concerns that cannot occur due to domain constraints, upstream guarantees, framework invariants, or strict typing (e.g., defensive null checks when schemas/types guarantee presence, speculative thread-safety on single-threaded workers).
-- **Inappropriate or scope violation:** Demands modifications outside the agreed task scope, enforces unadopted external idioms, or introduces premature abstractions and accidental complexity.
-- **Rule contradiction:** Proposes changes that violate established repository patterns, architecture guides, or active skills.
+Decline a finding when it meets any of these conditions. Provide a factual technical rebuttal with line references:
+- **Incorrect claim:** The reviewer misread code, assumed wrong execution flow, or cited nonexistent APIs.
+- **Speculative issue:** The scenario cannot occur because types, framework invariants, or domain boundaries prevent it.
+- **Scope violation:** The request demands changes outside the task scope, adds unneeded abstractions, or forces alien idioms.
+- **Rule contradiction:** The suggested change violates established project architecture, conventions, or active skills.
 
-### Acceptance & Prioritization Criteria (Accept Finding)
-Accept findings supported by concrete codebase evidence and categorize by severity:
+### Acceptance Criteria (Accept Finding)
+Accept findings supported by concrete code evidence. Assign severity:
 - **Critical / High:**
-  - Security vulnerabilities (injection, authorization bypass, secret exposure, insecure deserialization).
-  - Correctness bugs, data corruption risks, state leakage, or unhandled runtime exceptions.
-  - Architectural or module boundary violations.
+  - Security vulnerabilities (injection, authorization bypass, secret leaks, unsafe deserialization).
+  - Correctness bugs, data loss, state corruption, or unhandled exceptions.
+  - Module boundary or architecture violations.
 - **Medium:**
-  - Spaghetti, unclear, or unreadable code that obscures intent or increases cognitive load.
-  - Missing error handling or unhandled failure states in realistic execution paths.
-  - Missing tests for critical, reachable edge cases.
-  - Verifiable performance bottlenecks with tangible impact.
+  - Logic that obscures intent or increases cognitive load.
+  - Missing error handling for realistic failure paths.
+  - Missing tests for reachable edge cases.
+  - Measurable performance bottlenecks.
 - **Low:**
-  - Minor naming or readability inconsistencies.
-  - Redundant comments restating obvious code.
-  - Dead code or minor refactoring cleanups.
+  - Minor naming or style inconsistencies.
+  - Redundant comments that restate code.
+  - Dead code or minor cleanup opportunities.
 
 ---
 
 ## 2. Structured Triage Report
 
-Present findings in chat using a compact, structured format. Do not modify files during this phase.
+Present findings in chat using this Markdown structure. Do not edit files during triage. Write all text adhering to the 80% ASD-STE100 rule.
 
 ```markdown
 ### Review Findings Triage
@@ -56,13 +65,13 @@ Present findings in chat using a compact, structured format. Do not modify files
 #### Accepted Findings (Prioritized)
 | ID | Priority | Location | Finding & Evidence | Proposed Remediation |
 |---|---|---|---|---|
-| F-01 | Critical | `path/to/file.py:42` | Concrete bug description and verification evidence. | Minimal, targeted fix approach. |
-| F-02 | High | `path/to/file.py:88` | Architecture violation or unreadable code evidence. | Refactoring or cleanup strategy. |
+| F-01 | Critical | `path/to/file.py:42` | Function raises unhandled `KeyError` on empty payload. | Add explicit dictionary check and return `400` status. |
+| F-02 | High | `path/to/file.py:88` | Domain entity imports infrastructure database model directly. | Invert dependency through domain repository port. |
 
 #### Declined Findings
 | ID | Location | Reviewer Claim | Technical Rebuttal & Code Evidence |
 |---|---|---|---|
-| F-03 | `path/to/file.py:15` | Claimed issue. | Why it is invalid, mistaken, or an imaginary problem (with concrete proof from code/types). |
+| F-03 | `path/to/file.py:15` | Add null check for `user.id`. | Schema enforces non-nullable `user.id`. `User` type guarantees string value. |
 
 #### Open Questions & Trade-offs *(if applicable)*
 - **F-04:** Ambiguity or trade-off requiring human developer decision before action.
@@ -72,7 +81,7 @@ Present findings in chat using a compact, structured format. Do not modify files
 
 ## 3. Human Alignment & Approval Gate
 
-1. **Stop and wait:** After presenting the triage report, **MUST NOT** edit files, stage commits, or run destructive commands.
-2. **Seek explicit user approval:** Ask the user to confirm the accepted findings, review the declined justifications, and decide on any open trade-offs.
-3. **Resolve ambiguities:** Discuss and align with the human developer until no unclarity remains.
-4. **Implement approved fixes only:** Once approval is granted, implement targeted fixes for the agreed findings, keeping changes minimal, verifying with relevant tests, and adhering to repository conventions.
+1. **Stop execution:** Stop after presenting the triage report. Do not edit files or run destructive commands.
+2. **Request user approval:** Ask the user to confirm accepted findings, review declined rebuttals, and resolve open trade-offs.
+3. **Wait for confirmation:** Wait until the user approves the triage plan.
+4. **Implement approved fixes only:** Implement targeted fixes for approved findings only. Keep changes minimal, run tests, and follow project style.

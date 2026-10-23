@@ -4,31 +4,26 @@ description: Defines requirements for readable and consistent naming in Python. 
 compatibility: Requires Python 3.11+
 ---
 
-Baseline PEP 8 compliance is the required minimum, assumed enforced by the project's linter outside this skill. Follow established project conventions when present; otherwise, apply the semantic naming rules below to all Python identifiers, modules, and packages.
+Follow PEP 8 as the baseline standard. Follow established project conventions when present. Otherwise, apply these semantic naming rules to all Python identifiers, modules, and packages.
 
-**Scope boundary:** You **MUST** apply these rules to all newly written code and to existing code that the user
-explicitly asks to rename or refactor. You **MUST NOT** rename existing identifiers outside the requested task scope,
-even if they violate these rules; if surrounding code has poor naming, you may briefly mention it as an optional
-follow-up suggestion without editing it.
+**Scope boundary:** Apply these rules to newly written code. Apply these rules to existing code only when the user explicitly requests a rename or refactor. Do NOT rename identifiers outside the requested task scope. You may mention poor existing names as optional suggestions without modifying them.
 
 ## Common Rules
 
 ### 1. Express Purpose, Role, Grammar, and Unit in Context
 
-Use the shortest name that states *what* the value represents, *what* an action does, or *what unit* a quantity uses.
-Rely on enclosing scope (class, module, function) to avoid repeating context:
+Use the shortest name that states what a value represents, what an action does, or what unit a quantity uses. Rely on enclosing scope (class, module, function) to avoid repeating context:
 
 ```python
 class Customer:
     email: str  # Good: enclosing class supplies "customer" (avoid customer_email)
 ```
 
-Avoid generic placeholders (`data`, `value`, `item`, `items`, `info`, `obj`, `flag`, `result`, `res`, `ret`, `tmp`) and
-vague standalone verbs (`process`, `handle`, `execute`, `manage`, `do`, `run`). Generic action verbs (`process`,
-`handle`, `execute`, `run`, etc.) are acceptable when defined by a protocol, framework, or uniform command/handler
-contract where the enclosing type already specifies the operation (e.g., `CreateDatasetCommand.execute()`).
+Do not use generic placeholders (`data`, `value`, `item`, `items`, `info`, `obj`, `flag`, `result`, `res`, `ret`, `tmp`).
+Do not use vague standalone verbs (`process`, `handle`, `execute`, `manage`, `do`, `run`).
+Generic action verbs are acceptable only when a uniform command contract or protocol specifies the operation (e.g., `CreateDatasetCommand.execute()`).
 
-Follow these grammatical and structural patterns:
+Follow these patterns:
 
 - **Functions & methods:** use **verb** phrases (`parse_evaluation_response()`, `retry_failed_notifications()`) or
   boolean predicates (`is_expired()`).
@@ -43,10 +38,7 @@ Follow these grammatical and structural patterns:
 - **Units:** append the physical or time unit (`_km`, `_mm`, `_seconds`, `_ms`, `_bytes`).
 - **Timestamps & counts:** suffix timestamps with `_at` (`report_generated_at`, `created_at`) and counts with `_count`
   (`failed_delivery_count`).
-- **Collaborators & clients:** include the technical role (`_client`, `_gateway`, `_publisher`, `_repository`) rather
-  than naming an attribute after the vendor, technology, or domain plural alone—a class instance cannot own the entire
-  Stripe corporation as `self._stripe` or a Redis server as `self._redis`, but it can own `self._stripe_gateway` or
-  `self._redis_client`.
+- **Collaborators & clients:** append the technical role (`_client`, `_gateway`, `_publisher`, `_repository`). Do not name attributes after vendors or technologies alone (e.g., use `self._stripe_gateway`, not `self._stripe`; use `self._redis_client`, not `self._redis`).
 - **Modules:** use nouns for general modules (`evaluation_validator.py`); verb phrases
   (`validate_evaluation_response.py`) are acceptable for single-action command/use-case modules.
 - **Test functions:** use `test_<subject>_<condition>_<outcome>` (e.g.,
@@ -72,7 +64,7 @@ Follow these grammatical and structural patterns:
 | Base URL used to construct endpoint URLs | `url` | `base_url` |
 | Identifier of a streaming server | `srv` | `streaming_server_id` |
 | Recording start timestamp from decoded metadata | `start = data["start"]` | `recording_started_at = recording_metadata["start"]` |
-| Decoded JSON payload of a configuration change | `data = json.loads(change.data)` | `configuration_changes = json.loads(configuration_change.data)` |
+| Decoded JSON payload of configuration changes | `data = json.loads(change.data)` | `configuration_changes = json.loads(configuration_change.data)` |
 | Parsing an HTTP response into an evaluation result | `process(response)` | `parse_evaluation_response(response)` |
 | Retrying notifications whose delivery failed | `handle_notifications()` | `retry_failed_notifications()` |
 | Single-action module validating an external evaluation reply | `result_validation.py` | `validate_evaluation_response.py` |
@@ -108,7 +100,7 @@ Use abbreviations **only** from these three categories:
 2. **Ecosystem import aliases:** `import numpy as np`, `import pandas as pd`, `import matplotlib.pyplot as plt`.
 3. **Universally understood short forms** (prefer full words when clarity benefits):
    `clt` (client), `cfg` (configuration), `req` (request), `resp` (response), `err` (error), `gw` (gateway), `mgmt`
-   (management), `msg` (message), `img` (image), `proc` (process), `uow` (unit of work).
+   (management), `msg` (message), `img` (image), `proc` (process), `repo` (repository), `uow` (unit of work).
 
 Never invent ad-hoc truncations, consonant-stripped words, or project-only initials:
 
@@ -165,27 +157,14 @@ Use one domain term and one structural pattern across sibling fields, variables,
 
 ### 7. Prefer Plain Domain Terms Over Architectural Jargon
 
-Check project guidelines and neighboring modules first, reusing established project conventions. A project **MUST**
-maintain a small, non-overlapping architectural vocabulary with one suffix per role (e.g., `Command` / `CommandHandler`
-for mutations, `Query` for reads, `Gateway` for third-party services, `Repository` for persistence, `Port` for
-contracts, `View` for read models, `DTO` / `Params` / `Filter` for typed inputs/data). Never introduce duplicate or
-competing suffixes for the same role.
+Check project conventions and neighboring modules first. Maintain a single suffix per architectural role (e.g., `Command` for mutations, `Query` for reads, `Gateway` for external services, `Repository` for persistence, `Port` for contracts, `View` for read models). Never introduce duplicate or competing suffixes for the same role.
 
-When no convention exists, use the smallest coherent vocabulary that names the concrete business action or data
-structure, and **AVOID** grandiose abstractions (`Engine`, `Orchestrator`, `Coordinator`, `Manager`, `Processor`,
-`Handler`, `Controller`, `Supervisor`, `Dispatcher`, `Executor`, `Resolver`, `Provider`, `Pipeline`, `Flow`, `Kernel`,
-`Registry`, `Broker`, `Facilitator`, `Impersonator`, `Policy`, `Helper`). Names **MUST** be clear, minimal,
-established, and boring - never fancy, trendy, pretentious, or provocative:
+When no convention exists, name the concrete business action or data structure. Do not use generic abstractions (`Engine`, `Orchestrator`, `Coordinator`, `Manager`, `Processor`, `Handler`, `Controller`, `Supervisor`, `Dispatcher`, `Executor`, `Resolver`, `Provider`, `Pipeline`, `Flow`, `Kernel`, `Registry`, `Broker`, `Helper`). Keep names minimal, direct, and factual:
 
-- **Keep names proportional to the code:** Low-level systems and specialized libraries earn heavy terminology—Linux has
-  a `Kernel`, an OS has a `ProcessScheduler`, SQLAlchemy has an `Engine`, and YOLO has a `Backbone` and `DetectionHead`.
-  Ordinary web apps, APIs, and CLI daemons built on top of existing frameworks do not; never name routine CRUD, HTTP, or
-  database glue `Kernel`, `Engine`, `Processor`, or `Executor` unless it represents a genuine domain concept (e.g.,
-  `TransferProcessor` for payment clearing).
-- **Prefer plain functions:** use `send_invoice()` over a vague noun class (`InvoiceEngine`, `InvoiceManager`).
-- **Use specialized technical terms (`Projection`, `StateGraph`, `StateMachine`, `DependencyGraph`) only** when the code
-  actually implements those mechanics.
-- **Never wrap third-party APIs** or framework contracts solely to rename them.
+- **Match names to code scale:** Do not name routine CRUD or glue code `Kernel`, `Engine`, or `Processor`. Reserve heavy terms for low-level systems or genuine domain concepts (e.g., `PaymentProcessor`).
+- **Prefer simple functions:** Use plain functions like `send_invoice()`. Do not create artificial classes like `InvoiceEngine` or `InvoiceManager`.
+- **Use technical terms strictly:** Use terms like `StateMachine` or `DependencyGraph` only when code implements those data structures.
+- **Do not wrap external APIs:** Do not create wrapper classes solely to rename third-party libraries.
 
 **Application code examples:**
 
@@ -210,18 +189,16 @@ established, and boring - never fancy, trendy, pretentious, or provocative:
 | `DocumentJoiner` | Concatenates/merges document lists without score fusion | `merge_documents()` |
 | `Kernel` | Holds registered application services | `ServiceContainer` |
 
-### 8. Qualify Single-Word Variable Names When Scope Grows
+### 8. Qualify Single-Word Variable Names When Scope Expands
 
-Single-word names (`user`, `request`, `response`, `client`, `error`, `dataset`, `logger`, `router`, `websocket`) or
-short loop variables (`item`, `topic`, `key`, `value`) are valid **only** when unambiguous throughout their live scope.
+Single-word names (`user`, `request`, `client`) and short loop variables (`item`, `key`) are valid only when their scope is short and unambiguous.
 
-Add a distinguishing qualifier whenever:
+Add a qualifier when:
+- Multiple instances of the concept coexist (e.g., `source_dataset` vs. `target_dataset`, `incoming_request` vs. `upstream_request`).
+- The variable crosses multiple branches, stages, or long scopes.
+- Understanding usage requires scrolling back to the declaration.
 
-- Multiple instances of the same concept coexist (source vs. target, incoming vs. upstream, current vs. edited).
-- The variable spans a long function, nested branches, or multiple processing stages.
-- Understanding the variable at a usage site requires scrolling back to its assignment or type hint.
-
-Do not pad names with meaningless suffixes (`result_data`, `dataset_dataset`); state the specific distinction:
+Do not pad names with meaningless suffixes (`result_data`, `dataset_dataset`). State the specific domain difference:
 
 | Ambiguous Context | Insufficient | Qualified Name |
 |---|---|---|
@@ -240,23 +217,17 @@ Do not pad names with meaningless suffixes (`result_data`, `dataset_dataset`); s
 
 ### 1. Suffix Hexagonal Protocol Contracts with `Port`
 
-When using hexagonal architecture, suffix `typing.Protocol` interfaces with `Port` so concrete adapters can explicitly
-subclass them (`class InferenceGateway(InferenceGatewayPort):`). Although suffixing and explicitly inheriting from a
-`Protocol` are anti-patterns in pure structural typing, this pragmatic compromise is used to enable reliable IDE
-go-to-implementation navigation:
+When using hexagonal architecture, suffix `typing.Protocol` interfaces with `Port`. Concrete adapters subclass ports explicitly (`class InferenceGateway(InferenceGatewayPort):`) to enable IDE navigation:
 
 | Poor (`Protocol`) | Good (`Protocol`) |
 |---|---|
 | `InferenceGateway` | `InferenceGatewayPort` |
 | `UserRepository` | `UserRepositoryPort` |
 
-### 2. Separate `Read` and `Write` Repositories and Name Instances Explicitly
+### 2. Separate Read and Write Repositories
 
-Use the singular domain entity plus `Read` or `Write` in repository class/port names (`UserReadRepository`,
-`UserWriteRepository`).
-Name repository variables and attributes with the **singular domain subject + read/write role + `_repository` (or
-`_repo`)**. Pick either `_repository` or `_repo` consistently per project/module (never mix them) and store injected
-instances on protected attributes (`self._user_read_repository`):
+Use the singular domain entity plus `Read` or `Write` in repository contracts (`UserReadRepositoryPort`, `UserWriteRepositoryPort`).
+Name repository variables using the entity, role, and suffix (`user_read_repository`, `order_write_repository`). Choose either `_repository` or `_repo` consistently across a project. Do not mix both suffixes. Store injected instances on protected attributes (`self._user_read_repository`):
 
 | Repository Contract | Poor Variable / Parameter | Good Variable / Parameter (Prefix `_` on `self`) |
 |---|---|---|
@@ -268,12 +239,11 @@ instances on protected attributes (`self._user_read_repository`):
 | `PaymentReadRepositoryPort` | `payments` | `payment_read_repository` |
 | `NotificationWriteRepositoryPort` | `notifications` | `notification_write_repository` |
 
-### 3. Standardize Read (`load_`) and Write (`create`, `update`, `delete`, `save`) Repository Methods
+### 3. Standardize Repository Method Names
 
-- **Read repositories:** prefix query methods with `load_` instead of `get_`, `list_`, `fetch_`, or `find_`.
-- **Write repositories:** use `create()`, `update()`, and `delete()` (or `save()` for upsert/aggregate persistence)
-  instead of mixing `insert()`, `add()`, `store()`, `put()`, or `remove()`.
-- **Narrow domain-specific methods:** focused operations beyond standard CRUD (e.g., `exists_by_email()`, `count_active()`, `mark_as_expired()`, `archive_older_than()`) are acceptable when deliberately chosen for a specific query or atomic update.
+- **Read repositories:** Prefix query methods with `load_` (e.g., `load_all`, `load_by_id`). Do not use `get_`, `list_`, `fetch_`, or `find_`.
+- **Write repositories:** Use `create()`, `update()`, and `delete()`. Use `save()` for upserts. Do not use `insert()`, `add()`, or `store()`.
+- **Focused domain methods:** Use descriptive domain methods (e.g., `exists_by_email()`, `archive_older_than()`) for specialized lookups and atomic updates.
 
 | Role | Poor | Good |
 |---|---|---|
