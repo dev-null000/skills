@@ -23,7 +23,7 @@ You **MUST** write the handoff 80% of the way to ASD-STE100:
 ## Handoff Sections
 
 1. **Goal & Implementation:** State the original goal and what the change implements.
-2. **Changed Files:** List changed files or application areas with a 1-line summary each.
+2. **Changed Files & Context:** List changed files with a 1-line summary each. Include issue URLs or workspace doc paths if provided.
 3. **Verification:** List completed tests and checks as `command -> 1-line observed result`.
 4. **Issues & Resolutions:** List issues found during development and how each was resolved. Write `None` if empty.
 5. **Unverified:** List what you could not verify and why. Write `None` if empty.

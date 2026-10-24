@@ -29,7 +29,7 @@ You **MUST** write all handoff sections, table entries, and reviewer instruction
 Output the review handoff with these 8 sections:
 
 1. **Goal & Implementation Summary** *(max 5 bullets)*: State original objective and summarize implemented changes.
-2. **Context & Reference Links:** State repository path, base commit, diff command, and paths to plans and rules.
+2. **Context & Reference Links:** State repository path, base commit, diff command, and paths to plans and rules. Include user-provided issue URLs, design links, or workspace paths if present. Do not link to private agent harness directories.
 3. **Changed Files & Components:** Provide a compact table. Include a 1-line summary per file and total diff stats. For changes over 15 files, group by module into at most 15 rows.
 4. **Verification Evidence:** Provide a compact list formatted as `command -> 1-line observed result`. Map every completion claim to a test, linter, or type check.
 5. **Resolved Issues & Key Decisions** *(max 5 bullets)*: State non-obvious edge cases or design trade-offs.

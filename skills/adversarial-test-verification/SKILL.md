@@ -36,6 +36,7 @@ Inspect the target test files and corresponding production modules against these
 3. **Strong State & Value Assertions:** Flag superficial assertions (`assert result is not None`, `assert status == 200`, or bare `mock.assert_called()`) that omit exact return payloads, persisted database/repository state, or raised exception messages.
 4. **Boundary & Failure Coverage:** Verify explicit test cases for:
    - Boundary thresholds (`0`, `-1`, empty collections, `None`, off-by-one limits `<` vs. `<=`).
+   - Scenarios from user-provided incident logs, stack traces, or payload snippets (if provided).
    - Authorization denials and cross-tenant access attempts.
    - Idempotency, duplicate inputs, and downstream port failures.
 

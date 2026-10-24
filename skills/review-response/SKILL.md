@@ -26,7 +26,8 @@ Evaluate each finding independently. Base every decision on verifiable code evid
 For each reported finding:
 1. **Inspect code:** Open the cited `file:line`. Trace call hierarchies, data flows, and runtime invariants.
 2. **Verify against reality:** Check the claim against static types, tests, runtime behavior, and active skill rules.
-3. **Accept valid defects:** If code evidence confirms a defect or design flaw, accept the finding immediately.
+3. **Inspect provided evidence:** If the user provides review screenshots, CI logs, or issue URLs, verify claims directly against them.
+4. **Accept valid defects:** If code evidence confirms a defect or design flaw, accept the finding immediately.
 
 ### Rejection Criteria (Decline Finding)
 Decline a finding when it meets any of these conditions. Provide a factual technical rebuttal with line references:
@@ -55,7 +56,7 @@ Accept findings supported by concrete code evidence. Assign severity:
 
 ## 2. Structured Triage Report
 
-Present findings in chat using this Markdown structure. Do not edit files during triage. Write all text adhering to the 80% ASD-STE100 rule.
+Present findings in chat using this Markdown structure. Do not edit files during triage. Write all text adhering to the 80% ASD-STE100 rule. Cite provided evidence (e.g., issue URL, CI log line, or review comment) in the evidence column when applicable.
 
 ```markdown
 ### Review Findings Triage

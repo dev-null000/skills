@@ -23,6 +23,7 @@ Do NOT scan the entire repository. Restrict file reads strictly to the requested
 1. Read only files or symbols explicitly named in the user prompt.
 2. If no files are named, run a targeted search (`grep`/glob) for the domain term and inspect at most **5 directly relevant files** (or delegate to a fast read-only subagent).
 3. Inspect `pyproject.toml`, `package.json`, or `Taskfile.yaml` **only** if dependencies or verification commands are relevant.
+4. Inspect user-provided context if present (images, logs, stack traces, snippets, or URLs). Extract existing constraints before asking questions.
 
 Classify the request across two axes:
 - **Type:** `feat` | `fix` | `refactor` | `perf` | `chore` | `docs` | `test`
@@ -73,6 +74,7 @@ After resolving questions (or immediately on Fast-Track), output this **Task Con
 - **Net-New Additions:** <None, or approved new libraries/patterns>
 - **State, Failure & Security Invariants:** <Data changes, failure/idempotency rules, auth checks>
 - **Assumed Defaults:** <Low-risk decisions inferred from codebase conventions>
+- **Reference Context (Optional):** <Repository file paths, public URLs, or brief inline notes if provided; omit if none>
 - **Definition of Done:** <Exact test, linter, and typecheck commands + required edge cases>
 - **Execution Slices (if Scale M/L):** <Ordered list of 2–5 checkpointed slices, max 3–4 files per slice>
 ```
