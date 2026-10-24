@@ -22,7 +22,16 @@ You **MUST** write all audit findings, mutation tables, and remediation instruct
 
 Inspect the target test files and corresponding production modules against these 4 rules:
 
-1. **No Tautological Oracles:** Flag tests that copy production formulas, regexes, or queries into the `assert` statement. Require literal expected values or independent invariants (e.g., round-trip serialization, conservation of totals).
+1. **No Tautological Oracles:** Flag tests that copy production formulas, regexes, or queries into the `assert` statement. Require literal expected values or independent invariants (e.g., round-trip serialization, conservation of totals, directional bounds):
+   ```python
+   # Poor (copies buggy production formula into test)
+   assert calculate_discount(price, rate) == price * (Decimal("1") + rate)
+
+   # Good (literal expected value + directional bound)
+   discounted = calculate_discount(Decimal("100.00"), Decimal("0.20"))
+   assert discounted == Decimal("80.00")
+   assert Decimal("0") <= discounted <= Decimal("100.00")
+   ```
 2. **Boundary-Only Fakes & Mocks:** Allow fakes, stubs, or mocks **only** at external I/O or architectural port boundaries (`*Port`, HTTP clients, clocks, gateways). Flag any test that mocks the system under test, internal domain services, or private `_methods`.
 3. **Strong State & Value Assertions:** Flag superficial assertions (`assert result is not None`, `assert status == 200`, or bare `mock.assert_called()`) that omit exact return payloads, persisted database/repository state, or raised exception messages.
 4. **Boundary & Failure Coverage:** Verify explicit test cases for:
