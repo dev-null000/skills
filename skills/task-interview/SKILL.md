@@ -54,11 +54,12 @@ Ask questions to eliminate unclarity, hidden assumptions, and architectural ambi
 ### Ambiguity Checklist (Filter by Task Type)
 Ask only about unresolved items relevant to the classified **Type**:
 1. **Scope & Non-Goals (`feat`, `refactor`):** What exact behavior is in scope, and what adjacent work is excluded?
-2. **Reuse & Boundaries (`feat`, `refactor`):** Which existing ports, entities, or services must be reused?
-3. **Novelty (`feat`, `perf`, `chore`):** Are new libraries, external APIs, or patterns required that differ from the rest of the project?
-4. **State & Compatibility (`feat`, `fix`, `refactor`):** Does this alter schemas, migrations, or break existing callers/data?
-5. **Failure, Concurrency & Security (`feat`, `fix`, `perf`):** How must timeouts, retries, duplicate requests, or authorization checks behave?
-6. **Definition of Done & Execution Mode (`all`):** Which test/lint commands verify completion, and should execution run in a single pass or checkpointed slices?
+2. **User Interaction & UI Surface (`feat`):** If the change affects user workflows, what screens, controls, status indicators, or data views are added or changed?
+3. **Reuse & Boundaries (`feat`, `refactor`):** Which existing ports, entities, or services must be reused?
+4. **Novelty (`feat`, `perf`, `chore`):** Are new libraries, external APIs, or patterns required that differ from the rest of the project?
+5. **State & Compatibility (`feat`, `fix`, `refactor`):** Does this alter schemas, migrations, or break existing callers/data?
+6. **Failure, Concurrency & Security (`feat`, `fix`, `perf`):** How must timeouts, retries, duplicate requests, or authorization checks behave?
+7. **Definition of Done & Execution Mode (`all`):** Which test/lint commands verify completion, and should execution run in a single pass or checkpointed slices?
 
 ---
 
@@ -92,7 +93,8 @@ Output this **Task** in chat:
 After presenting the Task, verify the context and offer to generate only relevant companion artifacts:
 1. **Filter by relevance:**
    - Offer a **structure preview** only if new modules, public ports, or cross-layer refactorings are planned. Do not offer if folder structure is already established or obvious.
-   - Offer a **UI mockup** only if the change introduces net-new screens or interactive visual components. Do not offer for backend-only, API, or minor styling changes.
+   - Offer a **UI mockup** whenever user-facing views, forms, or data displays (e.g., metrics, tables, run statuses) are added or modified.
    - Offer to **save the Task to a file** (e.g., `.docs/<task-name>/TASK.md`) for persistent team reference.
-2. **Ask one combined question:** Present a single interactive choice offering only the relevant artifact options for the task.
-3. **Attach links:** When companion artifacts are generated, append their relative file links directly into the **Attached Artifacts** section of the Task.
+2. **Ask one combined question:** Present a single interactive choice offering only the relevant artifact options for the task, plus an option to proceed directly without extra artifacts.
+3. **User declination is standard:** The user can refuse any or all offered artifacts. Treat a refusal as normal workflow. Do not treat it as an error or block progress. Proceed directly to the next phase requested by the user.
+4. **Attach links:** When companion artifacts are generated, append their relative file links directly into the **Attached Artifacts** section of the Task.
