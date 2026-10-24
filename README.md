@@ -8,7 +8,7 @@ The skills form a complete, decoupled lifecycle from feature discovery to verifi
 
 | Phase | Skill | Purpose & Trigger |
 | :--- | :--- | :--- |
-| **Discovery** | [`spec-interview`](skills/spec-interview) | Classifies task type and scale (`S/M/L`), scans targeted scope, resolves ambiguities via a bounded interview, and outputs a compact Task Contract. |
+| **Discovery** | [`task-interview`](skills/task-interview) | Classifies task type and scale (`S/M/L`), scans targeted scope, resolves ambiguities via an adaptive interview, and outputs a self-contained Task. |
 | **Architecture** | [`folder-structure-preview`](skills/folder-structure-preview) | Renders a diff-annotated tree of files, classes, and method signatures before writing code to verify module boundaries and naming. |
 | **Conventions** | [`python-naming`](skills/python-naming) | Enforces semantic naming, PEP 8 baselines, affirmative booleans, and hexagonal architecture port/repository patterns. |
 | **Planning** | [`sliced-execution-plan`](skills/sliced-execution-plan) | Decomposes multi-file features into checkpointed vertical slices ($\le 4$ files each) with lower-tier model delegation markers and human approval gates. |
