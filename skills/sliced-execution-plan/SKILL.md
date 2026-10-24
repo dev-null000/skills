@@ -20,7 +20,7 @@ You **MUST** write all slice plans, boundary rules, delegation notes, and checkp
 ## Step 1: Establish Inputs (Standalone or Composed)
 
 Operate seamlessly with or without prior skills:
-1. **Composed Mode:** If a **Task Contract** (from `spec-interview`) or a **Structure & Symbol Preview** (from `folder-structure-preview`) exists in the conversation, reuse those boundaries, file paths, and signatures directly. Do not re-scan already inspected files.
+1. **Composed Mode:** If a requirements summary or a structure preview already exists in the conversation, reuse its boundaries, file paths, and signatures. Do not re-scan inspected files.
 2. **Standalone Mode:** If invoked directly from a user prompt without prior artifacts, run a targeted lookup (at most 5 relevant files) to identify target modules, public signatures, and test commands before slicing.
 
 ---

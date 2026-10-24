@@ -35,10 +35,10 @@ Output the review handoff with these 8 sections:
 5. **Resolved Issues & Key Decisions** *(max 5 bullets)*: State non-obvious edge cases or design trade-offs.
 6. **Unverified Areas** *(max 5 bullets)*: List items not verified automatically and state why.
 7. **Remaining Risks & Next Steps** *(max 5 bullets)*: State operational risks or follow-up tasks. Do not repeat unverified items.
-8. **Reviewer Prompt:** Append a copy-pasteable instruction block under 15 lines invoking the `dual-agent-review` skill:
+8. **Reviewer Prompt:** Append a copy-pasteable instruction block under 15 lines requesting an independent review:
 
 ```markdown
 ### Reviewer Instructions
 Review changes in `<repo-path>` (scope: `<diff-command-or-paths>`, base: `<commit>`) against the handoff above and `<paths-to-plan-and-AGENTS.md>`. Do NOT edit files, stage commits, or touch external services.
-Execute the `dual-agent-review` skill to audit these changes and present a ranked report. Do not edit files before developer approval.
+Audit these changes independently from two angles: specification compliance and adversarial critique. Present a ranked report. Do not edit files before developer approval.
 ```

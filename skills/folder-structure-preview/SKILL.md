@@ -31,7 +31,7 @@ You **MUST** write all architectural questions, design notes, and rationale outs
 
 3. **Verify architecture, scope, and naming before presenting:**
    - **Follow established architecture or ask:** Derive module boundaries and layer placement from user instructions, active skills, project documentation, or existing code. If the architectural style cannot be determined from any of these sources, ask the user for architectural requirements before proposing a structure.
-   - **Keep changes minimal and naming consistent:** Propose the smallest coherent change and never invent grandiose abstractions. Follow naming and style conventions from active skills (such as `python-naming`), project documentation, existing code, and linter/formatter configs; when none specify a rule, use the language's standard style guide (e.g., PEP 8 for Python) as the baseline.
+   - **Keep changes minimal and naming consistent:** Propose the smallest coherent change and never invent grandiose abstractions. Follow naming and style conventions from active skills, project documentation, existing code, and linter/formatter configs; when none specify a rule, use the language's standard style guide (e.g., PEP 8 for Python) as the baseline.
    - **Wait for approval:** Unless instructed to proceed immediately, stop after printing the preview and ask for confirmation before writing a detailed implementation plan, creating, or modifying files.
 
 ## Format Example

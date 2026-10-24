@@ -61,7 +61,7 @@ Ask only about unresolved items relevant to the classified **Type**:
 
 ## Step 3: Output the Task Contract
 
-After resolving questions (or immediately on Fast-Track), output this **Task Contract** (under 80 lines) as the verified input for the planning step (e.g., `folder-structure-preview`):
+After resolving questions (or immediately on Fast-Track), output this **Task Contract** (under 80 lines) as the verified input for the planning step (e.g., a structure preview or implementation plan):
 
 ```markdown
 ### Task Contract: <Task Title>
