@@ -82,7 +82,7 @@ Output this **Task** in chat:
 - **Assumed Defaults:** <Low-risk decisions inferred from codebase conventions>
 - **Reference Context (Optional):** <Repository file paths, public URLs, or brief inline notes if provided; omit if none>
 - **Definition of Done:** <Exact test, linter, and typecheck commands + required edge cases>
-- **Execution Slices (if Scale M/L):** <Ordered list of 2–5 checkpointed slices, max 3–4 files per slice>
+- **Execution Slices (if Scale M/L):** <Ordered list of logically cohesive, human-reviewable slices>
 - **Attached Artifacts:** <Links to attached structure previews, UI mockups, or task files if created, or "None">
 ```
 

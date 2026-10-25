@@ -27,9 +27,12 @@ Operate seamlessly with or without prior skills:
 
 ## Step 2: Slicing & Delegation Rules
 
-### 1. Bound Slice Size and Order
+### 1. Prioritize Logical Coherence & Human Reviewability
+- **Logical Consistency First (Mandatory):** Make every slice a self-contained, testable unit that leaves the repository green. Never split a cohesive change into broken half-steps to satisfy a file or line count.
 - **Single-Slice Fast-Track (`Scale S`):** If the task touches `1–2 files` (`<100 LOC`), output a single slice (`Slice 1 of 1`).
-- **Multi-Slice Cap (`Scale M/L`):** Split changes across `3+ files` into **2 to 5 sequential slices**. Cap each slice at **at most 4 files** or **`~250 LOC`**.
+- **Reviewability Target (`Scale M/L`):** Aim for **at most 10 substantive files** and **`<= 500 LOC` of production code** per slice. Test code is exempt from the 500-LOC target.
+- **Exclude Package Boilerplate:** Do not count empty package markers (`__init__.py`), pure re-export barrels (`index.ts`, `mod.rs`), or auto-generated files toward the file limit.
+- **Agile Exception:** If a logically indivisible slice requires `>10 substantive files` or `>500 production LOC`, keep it together and state a 1-sentence justification in the slice plan for user approval.
 - **Green-Tree Ordering:** Order slices along dependency boundaries so every completed slice compiles and passes tests:
   1. Domain entities, value objects, port protocols, and pure unit tests.
   2. Application command/query handlers and behavior tests using fakes.
