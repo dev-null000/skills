@@ -11,6 +11,7 @@ The skills form a complete, decoupled lifecycle from feature discovery to verifi
 | **Discovery** | [`task-interview`](skills/task-interview) | Classifies task type and scale (`S/M/L`), scans targeted scope, resolves ambiguities via an adaptive interview, and outputs a self-contained Task. |
 | **Architecture** | [`folder-structure-preview`](skills/folder-structure-preview) | Renders a diff-annotated tree of files, classes, and method signatures before writing code to verify module boundaries and naming. |
 | **Conventions** | [`python-naming`](skills/python-naming) | Enforces semantic naming, PEP 8 baselines, affirmative booleans, and hexagonal architecture port/repository patterns. |
+| **Conventions** | [`unambiguous-dictionary`](skills/unambiguous-dictionary) | Freezes and enforces canonical domain terms, structural patterns, and meanings in an in-repository dictionary to eliminate lexical drift. |
 | **Planning** | [`sliced-execution-plan`](skills/sliced-execution-plan) | Decomposes multi-file features into logically cohesive, human-reviewable vertical slices with lower-tier model delegation markers and approval gates. |
 | **Execution** | [`implement-plan`](skills/implement-plan) | Executes a plan of any format while enforcing checkpoints, deterministic tool verification, and immediate escalation when code reality contradicts the plan. |
 | **Testing (Authoring)** | [`damp-tests`](skills/damp-tests) | Enforces Descriptive And Meaningful Phrases (Arrange-Act-Assert, literal values, no loops/conditionals, 99% comments avoided). |
